@@ -9,8 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiTpoSplatRouteImport } from './routes/api/tpo.$'
 
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTpoSplatRoute = ApiTpoSplatRouteImport.update({
   id: '/api/tpo/$',
   path: '/api/tpo/$',
@@ -18,29 +24,40 @@ const ApiTpoSplatRoute = ApiTpoSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/api/tpo/$'
+  fullPaths: '/' | '/api/tpo/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/api/tpo/$'
-  id: '__root__' | '/api/tpo/$'
+  to: '/' | '/api/tpo/$'
+  id: '__root__' | '/' | '/api/tpo/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   ApiTpoSplatRoute: typeof ApiTpoSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/tpo/$': {
       id: '/api/tpo/$'
       path: '/api/tpo/$'
@@ -52,6 +69,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   ApiTpoSplatRoute: ApiTpoSplatRoute,
 }
 export const routeTree = rootRouteImport
