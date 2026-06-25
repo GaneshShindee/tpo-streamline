@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HistoryRouteImport } from './routes/history'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CompaniesRouteImport } from './routes/companies'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +20,11 @@ import { Route as ApiTpoSplatRouteImport } from './routes/api/tpo.$'
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
+  '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
@@ -78,6 +87,7 @@ export interface FileRouteTypes {
     | '/'
     | '/companies'
     | '/dashboard'
+    | '/history'
     | '/login'
     | '/companies/$offeringId'
     | '/api/tpo/$'
@@ -86,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/companies'
     | '/dashboard'
+    | '/history'
     | '/login'
     | '/companies/$offeringId'
     | '/api/tpo/$'
@@ -94,6 +105,7 @@ export interface FileRouteTypes {
     | '/'
     | '/companies'
     | '/dashboard'
+    | '/history'
     | '/login'
     | '/companies/$offeringId'
     | '/api/tpo/$'
@@ -103,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CompaniesRoute: typeof CompaniesRouteWithChildren
   DashboardRoute: typeof DashboardRoute
+  HistoryRoute: typeof HistoryRoute
   LoginRoute: typeof LoginRoute
   ApiTpoSplatRoute: typeof ApiTpoSplatRoute
 }
@@ -114,6 +127,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -170,6 +190,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CompaniesRoute: CompaniesRouteWithChildren,
   DashboardRoute: DashboardRoute,
+  HistoryRoute: HistoryRoute,
   LoginRoute: LoginRoute,
   ApiTpoSplatRoute: ApiTpoSplatRoute,
 }
