@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -17,6 +18,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CompaniesOfferingIdRouteImport } from './routes/companies.$offeringId'
 import { Route as ApiTpoSplatRouteImport } from './routes/api/tpo.$'
 
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
+  '/settings': typeof SettingsRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
+  '/settings': typeof SettingsRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/history': typeof HistoryRoute
   '/login': typeof LoginRoute
+  '/settings': typeof SettingsRoute
   '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/login'
+    | '/settings'
     | '/companies/$offeringId'
     | '/api/tpo/$'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/login'
+    | '/settings'
     | '/companies/$offeringId'
     | '/api/tpo/$'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/history'
     | '/login'
+    | '/settings'
     | '/companies/$offeringId'
     | '/api/tpo/$'
   fileRoutesById: FileRoutesById
@@ -117,11 +129,19 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   HistoryRoute: typeof HistoryRoute
   LoginRoute: typeof LoginRoute
+  SettingsRoute: typeof SettingsRoute
   ApiTpoSplatRoute: typeof ApiTpoSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -192,6 +212,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   HistoryRoute: HistoryRoute,
   LoginRoute: LoginRoute,
+  SettingsRoute: SettingsRoute,
   ApiTpoSplatRoute: ApiTpoSplatRoute,
 }
 export const routeTree = rootRouteImport
