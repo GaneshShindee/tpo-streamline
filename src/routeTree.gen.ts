@@ -9,27 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ApiTpoSplatRouteImport } from './routes/api/tpo.$'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const ApiTpoSplatRoute = ApiTpoSplatRouteImport.update({
+  id: '/api/tpo/$',
+  path: '/api/tpo/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/api/tpo/$': typeof ApiTpoSplatRoute
+}
+export interface FileRoutesByTo {
+  '/api/tpo/$': typeof ApiTpoSplatRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths: '/api/tpo/$'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to: '/api/tpo/$'
+  id: '__root__' | '/api/tpo/$'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  ApiTpoSplatRoute: typeof ApiTpoSplatRoute
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/api/tpo/$': {
+      id: '/api/tpo/$'
+      path: '/api/tpo/$'
+      fullPath: '/api/tpo/$'
+      preLoaderRoute: typeof ApiTpoSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  ApiTpoSplatRoute: ApiTpoSplatRoute,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
