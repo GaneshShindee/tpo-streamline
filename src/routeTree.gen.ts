@@ -13,6 +13,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CompaniesRouteImport } from './routes/companies'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CompaniesOfferingIdRouteImport } from './routes/companies.$offeringId'
 import { Route as ApiTpoSplatRouteImport } from './routes/api/tpo.$'
 
 const LoginRoute = LoginRouteImport.update({
@@ -35,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompaniesOfferingIdRoute = CompaniesOfferingIdRouteImport.update({
+  id: '/$offeringId',
+  path: '/$offeringId',
+  getParentRoute: () => CompaniesRoute,
+} as any)
 const ApiTpoSplatRoute = ApiTpoSplatRouteImport.update({
   id: '/api/tpo/$',
   path: '/api/tpo/$',
@@ -43,37 +49,59 @@ const ApiTpoSplatRoute = ApiTpoSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/companies': typeof CompaniesRoute
+  '/companies': typeof CompaniesRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
+  '/companies/$offeringId': typeof CompaniesOfferingIdRoute
   '/api/tpo/$': typeof ApiTpoSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/companies' | '/dashboard' | '/login' | '/api/tpo/$'
+  fullPaths:
+    | '/'
+    | '/companies'
+    | '/dashboard'
+    | '/login'
+    | '/companies/$offeringId'
+    | '/api/tpo/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/companies' | '/dashboard' | '/login' | '/api/tpo/$'
-  id: '__root__' | '/' | '/companies' | '/dashboard' | '/login' | '/api/tpo/$'
+  to:
+    | '/'
+    | '/companies'
+    | '/dashboard'
+    | '/login'
+    | '/companies/$offeringId'
+    | '/api/tpo/$'
+  id:
+    | '__root__'
+    | '/'
+    | '/companies'
+    | '/dashboard'
+    | '/login'
+    | '/companies/$offeringId'
+    | '/api/tpo/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CompaniesRoute: typeof CompaniesRoute
+  CompaniesRoute: typeof CompaniesRouteWithChildren
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   ApiTpoSplatRoute: typeof ApiTpoSplatRoute
@@ -109,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/companies/$offeringId': {
+      id: '/companies/$offeringId'
+      path: '/$offeringId'
+      fullPath: '/companies/$offeringId'
+      preLoaderRoute: typeof CompaniesOfferingIdRouteImport
+      parentRoute: typeof CompaniesRoute
+    }
     '/api/tpo/$': {
       id: '/api/tpo/$'
       path: '/api/tpo/$'
@@ -119,9 +154,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface CompaniesRouteChildren {
+  CompaniesOfferingIdRoute: typeof CompaniesOfferingIdRoute
+}
+
+const CompaniesRouteChildren: CompaniesRouteChildren = {
+  CompaniesOfferingIdRoute: CompaniesOfferingIdRoute,
+}
+
+const CompaniesRouteWithChildren = CompaniesRoute._addFileChildren(
+  CompaniesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CompaniesRoute: CompaniesRoute,
+  CompaniesRoute: CompaniesRouteWithChildren,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   ApiTpoSplatRoute: ApiTpoSplatRoute,
