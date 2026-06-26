@@ -82,6 +82,14 @@ export async function fetchCompanyOffering(offering: number) {
   );
 }
 
+export async function fetchCompanyOfferingInfo(offering: number) {
+  return tpoPostJson<Record<string, unknown>>(
+    "TPOCompanyScheduling/CompanyofferingInfo",
+    { offering },
+    "/company-info",
+  );
+}
+
 export type ApplyPayload = {
   companyOfferingid: number;
   cvFile: number | string;
