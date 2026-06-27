@@ -90,6 +90,14 @@ export async function fetchCompanyOfferingInfo(offering: number) {
   );
 }
 
+export async function fetchOfferingQuestions(companyOfferingid: number) {
+  return tpoPostJson<Record<string, unknown>>(
+    "StudentApplicationTrack/getOfferingQustion",
+    { companyOfferingid },
+    "/apply_company",
+  );
+}
+
 export type ApplyPayload = {
   companyOfferingid: number;
   cvFile: number | string;
@@ -108,6 +116,6 @@ export async function applyToCompany(payload: ApplyPayload) {
   return tpoPostForm<Record<string, unknown>>(
     "StudentApplicationTrack/applytocompany_mobile",
     fd,
-    "/student-cvdynamic",
+    "/apply_company",
   );
 }

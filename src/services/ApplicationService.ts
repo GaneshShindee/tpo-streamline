@@ -8,7 +8,7 @@ export const ApplicationService = {
     return tpoPostForm<Record<string, unknown>>(
       "StudentApplicationTrack/applytocompany_mobile",
       fd,
-      "/student-cvdynamic",
+      "/apply_company",
     );
   },
 };
