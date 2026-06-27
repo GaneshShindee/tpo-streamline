@@ -1,6 +1,10 @@
 export type DynamicQuestion = {
   id: number;
   question: string;
+  type?: string;
+  isChoice?: boolean;
+  isMultiChoice?: boolean;
+  options?: Array<{ id: number | string; answer: string; remark?: string }>;
 };
 
 export type ResumeOption = {

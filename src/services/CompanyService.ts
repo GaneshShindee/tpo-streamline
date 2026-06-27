@@ -27,9 +27,30 @@ function parseOfferingQuestions(data: unknown): DynamicQuestion[] {
   return (list as unknown[])
     .filter((q): q is Record<string, unknown> => !!q && typeof q === "object")
     .map((q) => {
-      const id = Number(q.id ?? q.question_id ?? q.questionId ?? 0);
-      const question = String(q.question ?? q.questionText ?? q.label ?? `Question ${id}`);
-      return { id, question };
+      const id = Number(q.id ?? q.question_id ?? q.questionId ?? q.offeringquestionquestion_id ?? 0);
+      const question = String(q.question ?? q.questionText ?? q.label ?? q.title ?? `Question ${id}`);
+      const type = q.question_type == null ? undefined : String(q.question_type);
+      const optionRows = Array.isArray(q.optionlist)
+        ? q.optionlist
+        : Array.isArray(q.options)
+          ? q.options
+          : [];
+      const options = optionRows
+        .filter((option): option is Record<string, unknown> => !!option && typeof option === "object")
+        .map((option, index) => ({
+          id: option.id == null || option.id === "" ? index : (option.id as number | string),
+          answer: String(option.answer ?? option.label ?? option.name ?? option.value ?? option.text ?? ""),
+          remark: option.option_remark == null ? undefined : String(option.option_remark),
+        }))
+        .filter((option) => option.answer.trim() !== "");
+      return {
+        id,
+        question,
+        type,
+        isChoice: Boolean(q.question_choice) || options.length > 0,
+        isMultiChoice: Boolean(q.question_multichoice) || /multi/i.test(type ?? ""),
+        options,
+      };
     })
     .filter((q) => q.id > 0);
 }
