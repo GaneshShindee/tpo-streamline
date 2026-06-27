@@ -7,7 +7,7 @@ export const CompanyService = {
   async getOffering(offeringId: number): Promise<CompanyOffering> {
     const [infoData, questionsData] = await Promise.all([
       fetchCompanyOfferingInfo(offeringId).catch(() => ({})),
-      fetchOfferingQuestions(offeringId).catch(() => ({})),
+      fetchOfferingQuestions(offeringId),
     ]);
     const offering = parseOfferingInfo(infoData, offeringId);
     const liveQuestions = parseOfferingQuestions(questionsData);
